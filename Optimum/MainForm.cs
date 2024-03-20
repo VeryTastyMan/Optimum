@@ -51,7 +51,7 @@ namespace Optimum
         List<Label> LabelInfo = new List<Label>();
 
 
-        int ProccessesDroped = 0;
+        int ProccessesDropped = 0;
 
 
 
@@ -224,7 +224,8 @@ namespace Optimum
                         ProcessesForDelete[n].LinkToProcess.Kill();
                         Ready = false;
 
-                        if (timerDropper.Enabled) ProccessesDroped++;
+                        if (timerDropper.Enabled)
+                            ProccessesDropped++;
                     }
 
                 AllProcesses();
@@ -233,6 +234,9 @@ namespace Optimum
                 await Task.Delay(200);
             }
             while (!Ready && Iteration < 50);
+
+            if (timerDropper.Enabled)
+                GenerateTrayText();
 
             button_Optimize.Enabled = true;
             button_Refresh.Enabled = true;
@@ -251,12 +255,17 @@ namespace Optimum
 
         void button_AutoDrop_Click(object sender, EventArgs e)
         {
-            timerDropper.Enabled = !timerDropper.Enabled;
-
-            button_AutoDrop.Text = timerDropper.Enabled ? "AutoDrop (ON)" : "AutoDrop (OFF)";
-
-            if (!timerDropper.Enabled)
-                ProccessesDroped = 0;
+            if (timerDropper.Enabled)
+            {
+                timerDropper.Stop();
+                button_AutoDrop.Text = "AutoDrop (OFF)";
+            }
+            else
+            {
+                timerDropper.Start();
+                ProccessesDropped = 0;
+                button_AutoDrop.Text = "AutoDrop (ON)";
+            }
 
             GenerateTrayText();
         }
@@ -273,7 +282,7 @@ namespace Optimum
             if (timerDropper.Enabled)
             {
                 trayIcon.Text += '\n' +
-                    $"Processes droped: {ProccessesDroped}\n" +
+                    $"Processes dropped: {ProccessesDropped}\n" +
                     $"Check processes every {timerDropper.Interval / 1000} sec";
             }
         }
