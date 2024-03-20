@@ -173,6 +173,19 @@ namespace Optimum
             }
         }
 
+        void GenerateTrayText()
+        {
+            var AssemblyInfo = Assembly.GetExecutingAssembly().GetName();
+            trayIcon.Text = $"{AssemblyInfo.Name} {AssemblyInfo.Version.Major}.{AssemblyInfo.Version.Minor}.{AssemblyInfo.Version.Build}";
+
+            if (timerDropper.Enabled)
+            {
+                trayIcon.Text += '\n' +
+                    $"Processes dropped: {ProccessesDropped}\n" +
+                    $"Check every {timerDropper.Interval / 1000} sec";
+            }
+        }
+
 
 
         // Form
@@ -273,19 +286,6 @@ namespace Optimum
 
 
         // Other
-
-        void GenerateTrayText()
-        {
-            var AssemblyInfo = Assembly.GetExecutingAssembly().GetName();
-            trayIcon.Text = $"{AssemblyInfo.Name} {AssemblyInfo.Version.Major}.{AssemblyInfo.Version.Minor}.{AssemblyInfo.Version.Build}";
-
-            if (timerDropper.Enabled)
-            {
-                trayIcon.Text += '\n' +
-                    $"Processes dropped: {ProccessesDropped}\n" +
-                    $"Check processes every {timerDropper.Interval / 1000} sec";
-            }
-        }
 
         void notifyIcon_MouseDoubleClick(object sender, MouseEventArgs e)
         {
