@@ -87,6 +87,18 @@ namespace Optimum
 
 
 
+        // Form
+
+        private void MainForm_Resize(object sender, EventArgs e)
+        {
+            if (WindowState == FormWindowState.Minimized)
+                Hide();
+
+            trayIcon.Visible = (WindowState == FormWindowState.Minimized);
+        }
+
+
+
         // Functions
 
         void StartMenu()
@@ -188,18 +200,6 @@ namespace Optimum
 
 
 
-        // Form
-
-        private void MainForm_Resize(object sender, EventArgs e)
-        {
-            if (WindowState == FormWindowState.Minimized)
-                Hide();
-
-            trayIcon.Visible = (WindowState == FormWindowState.Minimized);
-        }
-
-
-
         // Buttons
 
         void button_Tray_Click(object sender, EventArgs e)
@@ -223,6 +223,7 @@ namespace Optimum
             button_Refresh.Enabled = false;
             button_Optimize.Enabled = false;
             button_Reload_DWM.Enabled = false;
+            button_AutoDrop.Enabled = false;
 
             bool Ready;
             byte Iteration = 0;
@@ -254,6 +255,7 @@ namespace Optimum
             button_Optimize.Enabled = true;
             button_Refresh.Enabled = true;
             button_Reload_DWM.Enabled = true;
+            button_AutoDrop.Enabled = true;
         }
 
         void button_Reload_DWM_Click(object sender, EventArgs e)
